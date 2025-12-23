@@ -2450,7 +2450,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             profileHeader.innerHTML = `
                 <div class="header-top">
-                    <img src="${getUserIconUrl(user)}" class="user-icon-large" alt="${user.name}'s icon">
+                    <img src="${getUserIconUrl(user)}" class="user-icon-large" alt="${escapeHTML(user.name)}'s icon">
                     <div id="profile-actions" class="profile-actions"></div>
                 </div>
                 <div class="profile-info">
