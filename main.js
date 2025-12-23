@@ -175,7 +175,7 @@ window.addEventListener('DOMContentLoaded', () => {
             attachmentsHTML += '<div class="attachments-container">';
             for (const attachment of msg.attachments) {
                 const { data: publicUrlData } = supabase.storage.from('nyax').getPublicUrl(attachment.id);
-                const publicURL = publicUrlData.publicUrl;
+                const publicURL = escapeHTML(publicUrlData.publicUrl);
                 
                 let itemHTML = '<div class="attachment-item">';
                 if (attachment.type === 'image') {
