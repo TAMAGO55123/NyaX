@@ -2168,7 +2168,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     listItemsWrapper.innerHTML = dms.map(dm => {
                         const unreadCount = unreadCountsMap.get(dm.id) || 0;
                         const titlePrefix = unreadCount > 0 ? `(${unreadCount}) ` : '';
-                        const title = getEmoji(escapeHTML(dm.title)) || dm.member.map(id => allUsersCache.get(id)?.name || id).join(', ');
+                        const title = getEmoji(escapeHTML(dm.title || dm.member.map(id => allUsersCache.get(id)?.name || id).join(', ')));
                         
                         return `
                             <div class="dm-list-item" onclick="window.location.hash='#dm/${dm.id}'">
