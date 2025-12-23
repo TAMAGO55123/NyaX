@@ -1477,7 +1477,7 @@ window.addEventListener('DOMContentLoaded', () => {
             } else {
                 for (const attachment of post.attachments) {
                     const { data: publicUrlData } = supabase.storage.from('nyax').getPublicUrl(attachment.id);
-                    const publicURL = publicUrlData.publicUrl;
+                    const publicURL = escapeHTML(publicUrlData.publicUrl);
                     
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'attachment-item';
