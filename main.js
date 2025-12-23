@@ -3195,9 +3195,9 @@ window.addEventListener('DOMContentLoaded', () => {
                         itemLink.className = 'media-grid-item';
 
                         if (item.file_type === 'image') {
-                            itemLink.innerHTML = `<img src="${publicUrlData.publicUrl}" loading="lazy" alt="投稿メディア">`;
+                            itemLink.innerHTML = `<img src="${escapeHTML(publicUrlData.publicUrl)}" loading="lazy" alt="投稿メディア">`;
                         } else if (item.file_type === 'video') {
-                            itemLink.innerHTML = `<video src="${publicUrlData.publicUrl}" muted playsinline loading="lazy"></video>`;
+                            itemLink.innerHTML = `<video src="${escapeHTML(publicUrlData.publicUrl)}" muted playsinline loading="lazy"></video>`;
                         }
                         gridContainer.appendChild(itemLink);
                     }
