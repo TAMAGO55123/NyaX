@@ -198,7 +198,7 @@ window.addEventListener('DOMContentLoaded', () => {
         
         if (sent) {
             // 送信メッセージ
-            return `<div class="dm-message-container sent" data-message-id="${msg.id}">
+            return `<div class="dm-message-container sent" data-message-id="${escapeHTML(msg.id)}">
                 <div class="dm-message-wrapper">
                     <button class="dm-message-menu-btn">…</button>
                     <div class="post-menu">
