@@ -2396,7 +2396,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('page-title-sub').textContent = `#${user.id}`;
                 profileHeader.innerHTML = `
                     <div class="header-top">
-                        <img src="${getUserIconUrl(user)}" class="user-icon-large" alt="${user.name}'s icon">
+                        <img src="${getUserIconUrl(user)}" class="user-icon-large" alt="${escapeHTML(user.name)}'s icon">
                     </div>
                     <div class="profile-info">
                         <h2>${getEmoji(escapeHTML(user.name))}</h2>
