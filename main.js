@@ -3080,7 +3080,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 );
 
             userLink.innerHTML = `
-                <img src="${getUserIconUrl(u)}" style="width:48px; height:48px; border-radius:50%;" alt="${u.name}'s icon">
+                <img src="${getUserIconUrl(u)}" style="width:48px; height:48px; border-radius:50%;" alt="${escapeHTML(u.name)}'s icon">
                 <div>
                     <span class="name" style="font-weight:700;">${getEmoji(escapeHTML(u.name))}${badgeHTML}</span>
                     <span class="id" style="color:var(--secondary-text-color);">#${u.id}</span>
