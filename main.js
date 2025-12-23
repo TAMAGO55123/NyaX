@@ -629,7 +629,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }).join('');
         if(currentUser) DOM.navMenuTop.innerHTML += `<button class="nav-item nav-item-post"><span class="nav-item-text">ポスト</span><span class="nav-item-icon">${ICONS.send}</span></button>`;
         // 未ログイン時は何も表示せず、ログインしている場合のみアカウントボタンを表示する
-        DOM.navMenuBottom.innerHTML = currentUser ? `<button id="account-button" class="nav-item account-button"> <img src="${getUserIconUrl(currentUser)}" class="user-icon" alt="${currentUser.name}'s icon"> <div class="account-info"> <span class="name">${getEmoji(escapeHTML(currentUser.name))}</span> <span class="id">#${currentUser.id}</span> </div> </button>` : '';
+        DOM.navMenuBottom.innerHTML = currentUser ? `<button id="account-button" class="nav-item account-button"> <img src="${getUserIconUrl(currentUser)}" class="user-icon" alt="${escapeHTML(currentUser.name)}'s icon"> <div class="account-info"> <span class="name">${getEmoji(escapeHTML(currentUser.name))}</span> <span class="id">#${currentUser.id}</span> </div> </button>` : '';
         DOM.loginBanner.classList.toggle('hidden', !!currentUser);
         DOM.navMenuTop.querySelectorAll('a.nav-item').forEach(link => {
             link.onclick = (e) => {
