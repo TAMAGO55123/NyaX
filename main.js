@@ -2798,7 +2798,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             if (error) {
                 console.error('ログの取得に失敗:', error);
-                trigger.innerHTML = `<p class="error-message">${error.message}</p>`;
+                trigger.innerHTML = `<p class="error-message">${escapeHTML(error.message)}</p>`;
                 hasMore = false;
                 isLoadingMore = false;
                 return;
