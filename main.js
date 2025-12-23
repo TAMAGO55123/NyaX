@@ -834,7 +834,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (replyInfo) {
             replyingTo = replyInfo;
             const replyInfoDiv = modalContainer.querySelector('#reply-info');
-            replyInfoDiv.innerHTML = `<span>@${replyInfo.name}に返信中</span>`;
+            replyInfoDiv.innerHTML = `<span>@${escapeHTML(replyInfo.name)}に返信中</span>`;
             replyInfoDiv.classList.remove('hidden');
         }
 
