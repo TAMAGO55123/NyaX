@@ -119,7 +119,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (typeof str !== 'string') return '';
         const div = document.createElement('div');
         div.textContent = str;
-        return div.innerHTML;
+        return div.innerHTML.replaceAll(`'`, "&#39;").replaceAll(`"`, "&#34;");
     }
 
     function getEmoji(str) {
@@ -175,7 +175,7 @@ window.addEventListener('DOMContentLoaded', () => {
             attachmentsHTML += '<div class="attachments-container">';
             for (const attachment of msg.attachments) {
                 const { data: publicUrlData } = supabase.storage.from('nyax').getPublicUrl(attachment.id);
-                const publicURL = publicUrlData.publicUrl;
+                const publicURL = escapeHTML(publicUrlData.publicUrl);
                 
                 let itemHTML = '<div class="attachment-item">';
                 if (attachment.type === 'image') {
@@ -198,7 +198,7 @@ window.addEventListener('DOMContentLoaded', () => {
         
         if (sent) {
             // 送信メッセージ
-            return `<div class="dm-message-container sent" data-message-id="${msg.id}">
+            return `<div class="dm-message-container sent" data-message-id="${escapeHTML(msg.id)}">
                 <div class="dm-message-wrapper">
                     <button class="dm-message-menu-btn">…</button>
                     <div class="post-menu">
@@ -564,7 +564,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const isFollowing = currentUser?.follow?.includes(user.id);
             const btnClass = isFollowing ? 'follow-button-following' : 'follow-button-not-following';
             const btnText = isFollowing ? 'フォロー中' : 'フォロー';
-            return ` <div class="widget-item recommend-user"> <a href="#profile/${user.id}" class="profile-link" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:0.5rem;"> <img src="${getUserIconUrl(user)}" style="width:40px;height:40px;border-radius:50%;" alt="${user.name}'s icon"> <div> <span>${getEmoji(escapeHTML(user.name))}</span> <small style="color:var(--secondary-text-color); display:block;">#${user.id}</small> </div> </a> ${currentUser && currentUser.id !== user.id ? `<button class="${btnClass}" data-user-id="${user.id}">${btnText}</button>` : ''} </div>`;
+            return ` <div class="widget-item recommend-user"> <a href="#profile/${user.id}" class="profile-link" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:0.5rem;"> <img src="${getUserIconUrl(user)}" style="width:40px;height:40px;border-radius:50%;" alt="${escapeHTML(user.name)}'s icon"> <div> <span>${getEmoji(escapeHTML(user.name))}</span> <small style="color:var(--secondary-text-color); display:block;">#${user.id}</small> </div> </a> ${currentUser && currentUser.id !== user.id ? `<button class="${btnClass}" data-user-id="${user.id}">${btnText}</button>` : ''} </div>`;
         }).join('');
         if(DOM.rightSidebar.recommendations) DOM.rightSidebar.recommendations.innerHTML = `<div class="sidebar-widget">${recHTML}</div>`;
         DOM.rightSidebar.recommendations?.querySelectorAll('.recommend-user button').forEach(button => {
@@ -636,7 +636,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }).join('');
         if(currentUser) DOM.navMenuTop.innerHTML += `<button class="nav-item nav-item-post"><span class="nav-item-text">ポスト</span><span class="nav-item-icon">${ICONS.send}</span></button>`;
         // 未ログイン時は何も表示せず、ログインしている場合のみアカウントボタンを表示する
-        DOM.navMenuBottom.innerHTML = currentUser ? `<button id="account-button" class="nav-item account-button"> <img src="${getUserIconUrl(currentUser)}" class="user-icon" alt="${currentUser.name}'s icon"> <div class="account-info"> <span class="name">${getEmoji(escapeHTML(currentUser.name))}</span> <span class="id">#${currentUser.id}</span> </div> </button>` : '';
+        DOM.navMenuBottom.innerHTML = currentUser ? `<button id="account-button" class="nav-item account-button"> <img src="${getUserIconUrl(currentUser)}" class="user-icon" alt="${escapeHTML(currentUser.name)}'s icon"> <div class="account-info"> <span class="name">${getEmoji(escapeHTML(currentUser.name))}</span> <span class="id">#${currentUser.id}</span> </div> </button>` : '';
         DOM.loginBanner.classList.toggle('hidden', !!currentUser);
         DOM.navMenuTop.querySelectorAll('a.nav-item').forEach(link => {
             link.onclick = (e) => {
@@ -841,7 +841,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (replyInfo) {
             replyingTo = replyInfo;
             const replyInfoDiv = modalContainer.querySelector('#reply-info');
-            replyInfoDiv.innerHTML = `<span>@${replyInfo.name}に返信中</span>`;
+            replyInfoDiv.innerHTML = `<span>@${escapeHTML(replyInfo.name)}に返信中</span>`;
             replyInfoDiv.classList.remove('hidden');
         }
 
@@ -1015,7 +1015,7 @@ window.addEventListener('DOMContentLoaded', () => {
             if (file.type.startsWith('image/')) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    previewItem.innerHTML = `<img src="${e.target.result}" alt="${file.name}"><button class="file-preview-remove" data-index="${index}">×</button>`;
+                    previewItem.innerHTML = `<img src="${e.target.result}" alt="${escapeHTML(file.name)}"><button class="file-preview-remove" data-index="${index}">×</button>`;
                     previewContainer.appendChild(previewItem);
                 };
                 reader.readAsDataURL(file);
@@ -1484,7 +1484,7 @@ window.addEventListener('DOMContentLoaded', () => {
             } else {
                 for (const attachment of post.attachments) {
                     const { data: publicUrlData } = supabase.storage.from('nyax').getPublicUrl(attachment.id);
-                    const publicURL = publicUrlData.publicUrl;
+                    const publicURL = escapeHTML(publicUrlData.publicUrl);
                     
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'attachment-item';
@@ -1785,7 +1785,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 userLink.href = `#profile/${u.id}`;
                 userLink.className = 'profile-link';
                 userLink.style.cssText = 'display:flex; align-items:center; gap:0.8rem; text-decoration:none; color:inherit;';
-                userLink.innerHTML = `<img src="${getUserIconUrl(u)}" style="width:48px; height:48px; border-radius:50%;" alt="${u.name}'s icon"><div><span class="name" style="font-weight:700;">${getEmoji(escapeHTML(u.name))}</span><span class="id" style="color:var(--secondary-text-color);">#${u.id}</span><p class="me" style="margin:0.2rem 0 0;">${getEmoji(escapeHTML(u.me || ''))}</p></div>`;
+                userLink.innerHTML = `<img src="${getUserIconUrl(u)}" style="width:48px; height:48px; border-radius:50%;" alt="${escapeHTML(u.name)}'s icon"><div><span class="name" style="font-weight:700;">${getEmoji(escapeHTML(u.name))}</span><span class="id" style="color:var(--secondary-text-color);">#${u.id}</span><p class="me" style="margin:0.2rem 0 0;">${getEmoji(escapeHTML(u.me || ''))}</p></div>`;
                 userCard.appendChild(userLink);
                 userResultsContainer.appendChild(userCard);
             });
@@ -2175,7 +2175,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     listItemsWrapper.innerHTML = dms.map(dm => {
                         const unreadCount = unreadCountsMap.get(dm.id) || 0;
                         const titlePrefix = unreadCount > 0 ? `(${unreadCount}) ` : '';
-                        const title = getEmoji(escapeHTML(dm.title)) || dm.member.map(id => allUsersCache.get(id)?.name || id).join(', ');
+                        const title = getEmoji(escapeHTML(dm.title || dm.member.map(id => allUsersCache.get(id)?.name || id).join(', ')));
                         
                         return `
                             <div class="dm-list-item" onclick="window.location.hash='#dm/${dm.id}'">
@@ -2288,7 +2288,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     if (file.type.startsWith('image/')) {
                         const reader = new FileReader();
                         reader.onload = (e) => {
-                            previewItem.innerHTML = `<img src="${e.target.result}" alt="${file.name}"><button class="file-preview-remove" data-index="${index}">×</button>`;
+                            previewItem.innerHTML = `<img src="${e.target.result}" alt="${escapeHTML(file.name)}"><button class="file-preview-remove" data-index="${index}">×</button>`;
                         };
                         reader.readAsDataURL(file);
                     } else if (file.type.startsWith('video/')) {
@@ -2403,7 +2403,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('page-title-sub').textContent = `#${user.id}`;
                 profileHeader.innerHTML = `
                     <div class="header-top">
-                        <img src="${getUserIconUrl(user)}" class="user-icon-large" alt="${user.name}'s icon">
+                        <img src="${getUserIconUrl(user)}" class="user-icon-large" alt="${escapeHTML(user.name)}'s icon">
                     </div>
                     <div class="profile-info">
                         <h2>${getEmoji(escapeHTML(user.name))}</h2>
@@ -2457,7 +2457,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             profileHeader.innerHTML = `
                 <div class="header-top">
-                    <img src="${getUserIconUrl(user)}" class="user-icon-large" alt="${user.name}'s icon">
+                    <img src="${getUserIconUrl(user)}" class="user-icon-large" alt="${escapeHTML(user.name)}'s icon">
                     <div id="profile-actions" class="profile-actions"></div>
                 </div>
                 <div class="profile-info">
@@ -2805,7 +2805,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             if (error) {
                 console.error('ログの取得に失敗:', error);
-                trigger.innerHTML = `<p class="error-message">${error.message}</p>`;
+                trigger.innerHTML = `<p class="error-message">${escapeHTML(error.message)}</p>`;
                 hasMore = false;
                 isLoadingMore = false;
                 return;
@@ -3087,7 +3087,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 );
 
             userLink.innerHTML = `
-                <img src="${getUserIconUrl(u)}" style="width:48px; height:48px; border-radius:50%;" alt="${u.name}'s icon">
+                <img src="${getUserIconUrl(u)}" style="width:48px; height:48px; border-radius:50%;" alt="${escapeHTML(u.name)}'s icon">
                 <div>
                     <span class="name" style="font-weight:700;">${getEmoji(escapeHTML(u.name))}${badgeHTML}</span>
                     <span class="id" style="color:var(--secondary-text-color);">#${u.id}</span>
@@ -3202,9 +3202,9 @@ window.addEventListener('DOMContentLoaded', () => {
                         itemLink.className = 'media-grid-item';
 
                         if (item.file_type === 'image') {
-                            itemLink.innerHTML = `<img src="${publicUrlData.publicUrl}" loading="lazy" alt="投稿メディア">`;
+                            itemLink.innerHTML = `<img src="${escapeHTML(publicUrlData.publicUrl)}" loading="lazy" alt="投稿メディア">`;
                         } else if (item.file_type === 'video') {
-                            itemLink.innerHTML = `<video src="${publicUrlData.publicUrl}" muted playsinline loading="lazy"></video>`;
+                            itemLink.innerHTML = `<video src="${escapeHTML(publicUrlData.publicUrl)}" muted playsinline loading="lazy"></video>`;
                         }
                         gridContainer.appendChild(itemLink);
                     }
@@ -3665,7 +3665,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
 
         } catch (e) {
-            DOM.dmManageModalContent.innerHTML = `<p style="padding: 1.5rem;">${e.message}</p>`;
+            DOM.dmManageModalContent.innerHTML = `<p style="padding: 1.5rem;">${escapeHTML(e.message)}</p>`;
             console.error(e);
         }
     };
