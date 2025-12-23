@@ -1008,7 +1008,7 @@ window.addEventListener('DOMContentLoaded', () => {
             if (file.type.startsWith('image/')) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    previewItem.innerHTML = `<img src="${e.target.result}" alt="${file.name}"><button class="file-preview-remove" data-index="${index}">×</button>`;
+                    previewItem.innerHTML = `<img src="${e.target.result}" alt="${escapeHTML(file.name)}"><button class="file-preview-remove" data-index="${index}">×</button>`;
                     previewContainer.appendChild(previewItem);
                 };
                 reader.readAsDataURL(file);
