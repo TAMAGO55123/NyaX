@@ -3658,7 +3658,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
 
         } catch (e) {
-            DOM.dmManageModalContent.innerHTML = `<p style="padding: 1.5rem;">${e.message}</p>`;
+            DOM.dmManageModalContent.innerHTML = `<p style="padding: 1.5rem;">${escapeHTML(e.message)}</p>`;
             console.error(e);
         }
     };
