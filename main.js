@@ -1003,10 +1003,112 @@ window.addEventListener('DOMContentLoaded', () => {
         container.querySelector('textarea').addEventListener('keydown', handleCtrlEnter);
     }
 
-    function handleFileSelection(event, container) {
+    async function compressImage(file) {
+        return new Promise((resolve, reject) => {
+            // 画像以外のファイルはそのまま返す
+            if (!file.type.startsWith('image/')) {
+                resolve(file);
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    // 最大サイズの設定
+                    const MAX_WIDTH = 1920;
+                    const MAX_HEIGHT = 1920;
+                    const JPEG_QUALITY = 0.85; // 品質 (85)
+
+                    let { width, height } = img;
+
+                    if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+                        const ratio = Math.min(MAX_WIDTH / width, MAX_HEIGHT / height);
+                        width = Math.round(width * ratio);
+                        height = Math.round(height * ratio);
+                    }
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // PNG/WebPで透明度がある場合はそのまま、それ以外はJPEGに変換
+                    let outputType = 'image/jpeg';
+                    let quality = JPEG_QUALITY;
+
+                    if (file.type === 'image/png' || file.type === 'image/webp') {
+                        const imageData = ctx.getImageData(0, 0, width, height);
+                        const hasTransparency = imageData.data.some((_, i) => i % 4 === 3 && imageData.data[i] < 255);
+
+                        if (hasTransparency) {
+                            outputType = 'image/png';
+                            quality = 0.9; // PNGのみ品質を90にする
+                        }
+                    }
+
+                    canvas.toBlob((blob) => {
+                        if (!blob) {
+                            reject(new Error('画像の圧縮に失敗しました'));
+                            return;
+                        }
+
+                        // 圧縮後のファイルサイズが元より大きい場合は元のファイルを使用
+                        if (blob.size >= file.size) {
+                            resolve(file);
+                            return;
+                        }
+
+                        // 拡張子の設定
+                        const extension = outputType === 'image/jpeg' ? '.jpg' : '.png';
+                        const originalName = file.name.replace(/\.[^/.]+$/, '');
+                        const compressedFile = new File([blob], originalName + extension, {
+                            type: outputType,
+                            lastModified: Date.now()
+                        });
+
+                        // 確認用
+                        //console.log(`画像圧縮完了: ${(file.size / 1024).toFixed(1)}KB → ${(blob.size / 1024).toFixed(1)}KB (${((1 - blob.size / file.size) * 100).toFixed(1)}% OFF)`);
+                        resolve(compressedFile);
+                    }, outputType, quality);
+                };
+
+                img.onerror = () => reject(new Error('画像の読み込みに失敗しました'));
+                img.src = e.target.result;
+            };
+
+            reader.onerror = () => reject(new Error('ファイルの読み込みに失敗しました'));
+            reader.readAsDataURL(file);
+        });
+    }
+
+    async function handleFileSelection(event, container) {
         const previewContainer = container.querySelector('.file-preview-container');
+
+        previewContainer.innerHTML = '<div class="spinner" style="margin: 1rem;"></div>'; // 処理中表示
+
+        const files = Array.from(event.target.files);
+        const compressedFiles = [];
+
+        // 画像を圧縮
+        for (const file of files) {
+            try {
+                const compressed = await compressImage(file);
+                compressedFiles.push(compressed);
+            } catch (error) {
+                console.error('ファイル処理エラー:', error);
+                compressedFiles.push(file); // エラー時は元ファイルを使用する
+            }
+        }
+
+        selectedFiles = compressedFiles;
+
         previewContainer.innerHTML = '';
-        selectedFiles = Array.from(event.target.files);
         
         selectedFiles.forEach((file, index) => {
             const previewItem = document.createElement('div');
