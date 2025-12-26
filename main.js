@@ -159,8 +159,8 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        // icon_dataがなければ、デフォルトのScratchアバターURLを返す
-        return `https://mnvdpvsivqqbzbtjtpws.supabase.co/functions/v1/getScratchUserIcon?id=${user.scid}`;
+        // icon_dataがなければ、デフォルトのアバター(_neko_)URLを返す
+        return `/emoji/neko.svg`;
     }
 
     async function renderDmMessage(msg) {
