@@ -3015,7 +3015,7 @@ window.addEventListener('DOMContentLoaded', () => {
                                 hasMoreItems = false;
                             }
                         } else if (options.tab === 'announce') {
-                            idQuery = supabase.from('post').select('id').eq('userid', 1624).ilike('content', '%#NXAnnounce%').is('reply_id', null).order('time', { ascending: false });
+                            idQuery = supabase.from('post').select('id').eq('userid', 2525).ilike('content', '%#NXAnnounce%').is('reply_id', null).order('time', { ascending: false });
                         }
                     } else if (type === 'profile_posts') {
                         doprofile = true;
