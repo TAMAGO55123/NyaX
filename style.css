@@ -2420,6 +2420,11 @@ body.dark .profile-follow-button {
     border-color: var(--primary-color);
 }
 
+#trl {
+    height: 1.2em;
+    vertical-align: text-bottom;
+}
+
 /* レスポンシブ */
 @media (max-width: 1100px) {
     #right-sidebar {
