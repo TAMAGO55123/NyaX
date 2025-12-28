@@ -1618,6 +1618,12 @@ window.addEventListener('DOMContentLoaded', () => {
             // maskが有効の場合attachmentsもhidden化
             if (post.mask) {
                 attachmentsContainer.classList.add('hidden');
+            } else if (post.attachments.length > 2) {
+                const postAlert = document.createElement('button');
+                postAlert.className = 'post-mask-alert';
+                postAlert.innerText = `${post.attachments.length}件のファイル`;
+                postMain.appendChild(postAlert);
+                attachmentsContainer.classList.add('hidden');
             }
             if (isNested) {
                 const itemDiv = document.createElement('div');
