@@ -1907,10 +1907,14 @@ window.addEventListener('DOMContentLoaded', () => {
         const contentDiv = DOM.searchResultsContent;
         contentDiv.innerHTML = '';
         
+        const postContainer = document.createElement('div');
+        contentDiv.appendChild(postContainer);
         const userResultsContainer = document.createElement('div');
         contentDiv.appendChild(userResultsContainer);
         const postResultsContainer = document.createElement('div');
         contentDiv.appendChild(postResultsContainer);
+
+        
 
         userResultsContainer.innerHTML = '<div class="spinner"></div>';
         // 検索フィルターのベース
