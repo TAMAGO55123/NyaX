@@ -1914,9 +1914,11 @@ window.addEventListener('DOMContentLoaded', () => {
         const postResultsContainer = document.createElement('div');
         contentDiv.appendChild(postResultsContainer);
 
-        postContainer.innerHTML = `
-        <button type="button" class="tag-post-button">このタグでポストする</button>
-        `
+        if(currentUser){
+            postContainer.innerHTML = `
+            <button type="button" class="tag-post-button">このタグでポストする</button>
+            `
+        }
         postContainer.querySelector('.tag-post-button').addEventListener('click',() => {
             const modalContainer = DOM.postModal.querySelector('.post-form-container-modal');
             modalContainer.innerHTML = createPostFormHTML(true);
