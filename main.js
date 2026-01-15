@@ -1924,7 +1924,7 @@ window.addEventListener('DOMContentLoaded', () => {
             modalContainer.innerHTML = createPostFormHTML(true);
             attachPostFormListeners(modalContainer);
             modalContainer.querySelector('textarea').textContent = escapeHTML(query);
-        }):
+        });
 
         userResultsContainer.innerHTML = '<div class="spinner"></div>';
         // 検索フィルターのベース
