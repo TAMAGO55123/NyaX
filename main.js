@@ -1922,7 +1922,7 @@ window.addEventListener('DOMContentLoaded', () => {
         postContainer.querySelector('.tag-post-button').addEventListener('click',() => {
             const modalContainer = DOM.postModal.querySelector('.post-form-container-modal');
             modalContainer.innerHTML = createPostFormHTML(true);
-            attachPostFormListeners(modalContainer);
+            await attachPostFormListeners(modalContainer);
             modalContainer.querySelector('textarea').textContent = escapeHTML(query);
         });
 
