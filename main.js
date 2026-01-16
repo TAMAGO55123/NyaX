@@ -1919,7 +1919,7 @@ window.addEventListener('DOMContentLoaded', () => {
             <button type="button" class="tag-post-button">このタグでポストする</button>
             `
         }
-        postContainer.querySelector('.tag-post-button').addEventListener('click',() => {
+        postContainer.querySelector('.tag-post-button').addEventListener('click', async () => {
             const modalContainer = DOM.postModal.querySelector('.post-form-container-modal');
             modalContainer.innerHTML = createPostFormHTML(true);
             await attachPostFormListeners(modalContainer);
