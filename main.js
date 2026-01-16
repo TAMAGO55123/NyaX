@@ -1917,6 +1917,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if(currentUser){
             const tagPostButton = document.createElement('button');
             tagPostButton.className = 'tag-post-button';
+            tagPostButton.textContent = 'このタグでポストする';
             tagPostButton.addEventListener('click', async () => {
                 const modalContainer = DOM.postModal.querySelector('.post-form-container-modal');
                 modalContainer.innerHTML = createPostFormHTML(true);
