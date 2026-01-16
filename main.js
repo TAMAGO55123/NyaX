@@ -1924,6 +1924,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 await attachPostFormListeners(modalContainer);
                 modalContainer.querySelector('textarea').textContent = escapeHTML(query);
             });
+            postContainer.appendChild(tagPostButton);
         }
         
 
