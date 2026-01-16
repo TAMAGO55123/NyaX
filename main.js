@@ -1915,16 +1915,16 @@ window.addEventListener('DOMContentLoaded', () => {
         contentDiv.appendChild(postResultsContainer);
 
         if(currentUser){
-            postContainer.innerHTML = `
-            <button type="button" class="tag-post-button">このタグでポストする</button>
-            `
+            const tagPostButton = document.createElement('button');
+            tagPostButton.className = 'tag-post-button';
+            tagPostButton.addEventListener('click', async () => {
+                const modalContainer = DOM.postModal.querySelector('.post-form-container-modal');
+                modalContainer.innerHTML = createPostFormHTML(true);
+                await attachPostFormListeners(modalContainer);
+                modalContainer.querySelector('textarea').textContent = escapeHTML(query);
+            });
         }
-        postContainer.querySelector('.tag-post-button').addEventListener('click', async () => {
-            const modalContainer = DOM.postModal.querySelector('.post-form-container-modal');
-            modalContainer.innerHTML = createPostFormHTML(true);
-            await attachPostFormListeners(modalContainer);
-            modalContainer.querySelector('textarea').textContent = escapeHTML(query);
-        });
+        
 
         userResultsContainer.innerHTML = '<div class="spinner"></div>';
         // 検索フィルターのベース
