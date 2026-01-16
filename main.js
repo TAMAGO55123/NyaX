@@ -1919,10 +1919,15 @@ window.addEventListener('DOMContentLoaded', () => {
             tagPostButton.className = 'tag-post-button';
             tagPostButton.innerHTML = 'このタグでポストする';
             tagPostButton.addEventListener('click', async () => {
+                if (!currentUser) return goToLoginPage();
+                DOM.postModal.classList.remove('hidden');
                 const modalContainer = DOM.postModal.querySelector('.post-form-container-modal');
-                modalContainer.innerHTML = createPostFormHTML(true);
-                await attachPostFormListeners(modalContainer);
-                modalContainer.querySelector('textarea').textContent = escapeHTML(query);
+                modalContainer.innerHTML = createPostFormHTML(true) + `<div id="quoting-preview-container"></div>`;
+                attachPostFormListeners(modalContainer);
+                modalContainer.querySelector('textarea').textContent = "#" + escapeHTML(query);
+
+                DOM.postModal.querySelector('.modal-close-btn').onclick = closePostModal;
+                modalContainer.querySelector('textarea').focus();
             });
             postContainer.appendChild(tagPostButton);
         }
