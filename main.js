@@ -1924,7 +1924,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 const modalContainer = DOM.postModal.querySelector('.post-form-container-modal');
                 modalContainer.innerHTML = createPostFormHTML(true) + `<div id="quoting-preview-container"></div>`;
                 attachPostFormListeners(modalContainer);
-                modalContainer.querySelector('textarea').textContent = "#" + escapeHTML(query);
+                modalContainer.querySelector('textarea').textContent = "#" + query;
 
                 DOM.postModal.querySelector('.modal-close-btn').onclick = closePostModal;
                 modalContainer.querySelector('textarea').focus();
