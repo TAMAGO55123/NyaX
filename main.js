@@ -375,7 +375,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     async function MakeTrustLabel(id, single = true) {
-        if (!currentUser.settings?.show_trust_label) return '';
+        if (!currentUser?.settings?.show_trust_label) return '';
         let ids = [];
         if (single) {
             ids = [id];
