@@ -2623,6 +2623,10 @@ window.addEventListener('DOMContentLoaded', () => {
                 if (user.lock) {
                     blockNoticeHtml += `<div class="freeze-notice">このユーザーはポストを非公開に設定しています。表示するにはフォローリクエストを送信してください。</div>`;
                 }
+            } else if (!currentUser) {
+                if (user.lock) {
+                    blockNoticeHtml += `<div class="freeze-notice">このユーザーはポストを非公開に設定しています。</div>`;
+                }
             }
             if (blockNoticeHtml) {
                 // 通知を生成
