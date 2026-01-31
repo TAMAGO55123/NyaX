@@ -1845,37 +1845,40 @@ window.addEventListener('DOMContentLoaded', () => {
 		postHeader.appendChild(postTime);
 
 		// ポストメニューボタン
-		if (
-			currentUser &&
-			!isNested &&
-			(currentUser.id === post.userid || currentUser.admin)
-		) {
+		if (currentUser && !isNested) {
 			const menuBtn = document.createElement('button');
 			menuBtn.className = 'post-menu-btn';
 			menuBtn.innerHTML = '…';
 			const menu = document.createElement('div');
 			menu.className = 'post-menu';
 
-			const pinBtn = document.createElement('button');
-			pinBtn.className = 'pin-btn';
-			if (!currentUser.pin || currentUser.pin !== post.id) {
-				pinBtn.textContent = 'ピン留め';
-			} else {
-				pinBtn.textContent = 'ピン留めを解除';
-			}
-			menu.appendChild(pinBtn);
+			const shareBtn = document.createElement('button');
+			shareBtn.className = 'share-btn';
+			shareBtn.textContent = 'URLをコピー';
+			menu.appendChild(shareBtn);
 
-			if (!post.repost_to || post.content) {
-				const editBtn = document.createElement('button');
-				editBtn.className = 'edit-btn';
-				editBtn.textContent = '編集';
-				menu.appendChild(editBtn);
-			}
+			if (currentUser.id === post.userid || currentUser.admin) {
+				const pinBtn = document.createElement('button');
+				pinBtn.className = 'pin-btn';
+				if (!currentUser.pin || currentUser.pin !== post.id) {
+					pinBtn.textContent = 'ピン留め';
+				} else {
+					pinBtn.textContent = 'ピン留めを解除';
+				}
+				menu.appendChild(pinBtn);
 
-			const deleteBtn = document.createElement('button');
-			deleteBtn.className = 'delete-btn';
-			deleteBtn.textContent = '削除';
-			menu.appendChild(deleteBtn);
+				if (!post.repost_to || post.content) {
+					const editBtn = document.createElement('button');
+					editBtn.className = 'edit-btn';
+					editBtn.textContent = '編集';
+					menu.appendChild(editBtn);
+				}
+
+				const deleteBtn = document.createElement('button');
+				deleteBtn.className = 'delete-btn';
+				deleteBtn.textContent = '削除';
+				menu.appendChild(deleteBtn);
+			}
 
 			postHeader.appendChild(menuBtn);
 			postHeader.appendChild(menu);
@@ -3246,7 +3249,7 @@ window.addEventListener('DOMContentLoaded', () => {
 					menuButton.innerHTML = '…';
 					menuButton.onclick = (e) => {
 						e.stopPropagation();
-						openProfileMenu(e.currentTarget, user); // 新しい関数（下記）に変更
+						openProfileMenu(user);
 					};
 					actionsContainer.appendChild(menuButton);
 				}
@@ -4304,7 +4307,15 @@ window.addEventListener('DOMContentLoaded', () => {
 		}
 	}
 
-	// --- 11. ユーザーアクション (変更なし) ---
+	// --- 11. ユーザーアクション ---
+	window.copyPost = async (postId, button) => {
+		await navigator.clipboard.writeText(
+			`${window.location.origin}/#post/${postId}`,
+		);
+		if (button) {
+			button.innerText = `コピーしました!`;
+		}
+	};
 	window.pinPost = async (postId) => {
 		let cmessage, emessage;
 
@@ -5506,7 +5517,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		}
 	}
 
-	function openProfileMenu(button, targetUser) {
+	function openProfileMenu(targetUser) {
 		document.getElementById('profile-menu')?.remove();
 
 		const menu = document.createElement('div');
@@ -5542,7 +5553,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			menu.appendChild(blockBtn);
 		}
 
-		// 管理者のみのメニュー
+		// NyaXTeamのみのメニュー
 		if (currentUser.admin) {
 			const verifyBtn = document.createElement('button');
 			verifyBtn.textContent = targetUser.verify
@@ -5577,12 +5588,11 @@ window.addEventListener('DOMContentLoaded', () => {
 			menu.appendChild(freezeBtn);
 		}
 
-		document.body.appendChild(menu);
-		const btnRect = button.getBoundingClientRect();
-		menu.style.position = 'absolute';
-		menu.style.top = `${window.scrollY + btnRect.bottom}px`;
-		menu.style.left = `${window.scrollX + btnRect.left}px`;
+		menu.style.top = `auto`;
 		menu.style.right = 'auto';
+		menu.style.transform = 'translateY(3rem)';
+		const acts = document.getElementById('profile-actions');
+		acts.appendChild(menu);
 
 		setTimeout(() => {
 			document.addEventListener('click', () => menu.remove(), {
@@ -5903,6 +5913,12 @@ window.addEventListener('DOMContentLoaded', () => {
 			const timelinePostId = postElement.dataset.postId;
 			const actionTargetPostId =
 				postElement.dataset.actionTargetId || timelinePostId;
+
+			const shareButton = target.closest('.share-btn');
+			if (shareButton) {
+				window.copyPost(timelinePostId, shareButton);
+				return;
+			}
 
 			const editButton = target.closest('.edit-btn');
 			if (editButton) {

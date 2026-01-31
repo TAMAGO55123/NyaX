@@ -915,7 +915,6 @@ em-emoji-picker {
 	z-index: 5; /* 他の要素との重なり順を明確化 */
 }
 
-/* ★★★ メニューの表示方法を根本から変更 ★★★ */
 .post-menu {
 	position: absolute;
 	right: 0;
@@ -924,10 +923,9 @@ em-emoji-picker {
 	border: 1px solid var(--border-color);
 	border-radius: 8px;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-	z-index: 101; /* 修正: 20から101へ変更し、他のUIより手前に表示 */
-	min-width: 150px;
+	z-index: 101;
+	width: 11rem;
 	overflow: hidden;
-	/* デフォルトで非表示にする */
 	visibility: hidden;
 	opacity: 0;
 	transition:
@@ -2586,7 +2584,6 @@ body.dark .profile-follow-button {
 		display: none;
 	}
 
-	/* ▼▼▼ このブロックを新規追加 ▼▼▼ */
 	/* ポストボタンのアイコン表示切り替え */
 	.nav-item-post {
 		width: 52px; /* アイコンに合わせたサイズ */
