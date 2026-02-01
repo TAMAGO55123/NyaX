@@ -855,6 +855,20 @@ window.addEventListener('DOMContentLoaded', () => {
 		DOM.navMenuTop
 			.querySelector('.nav-item-post')
 			?.addEventListener('click', () => openPostModal());
+		const AccountButton =
+			document.getElementsByClassName('nav-item-post')[0];
+		if (AccountButton) {
+			if (
+				window.matchMedia('(max-width:680px)').matches &&
+				location.hash.startsWith('#dm')
+			) {
+				if (!AccountButton.classList.contains('hidden')) {
+					AccountButton.classList.add('hidden');
+				}
+			} else if (AccountButton.classList.contains('hidden')) {
+				AccountButton.classList.remove('hidden');
+			}
+		}
 		loadRightSidebar();
 	}
 
