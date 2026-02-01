@@ -2622,8 +2622,7 @@ body.dark .profile-follow-button {
 		width: 100%;
 	}
 	.nav-item[href='#likes'],
-	.nav-item[href='#stars'],
-	.nav-item[href^='#profile'] {
+	.nav-item[href='#stars'] {
 		display: none;
 	}
 	.nav-item-post {

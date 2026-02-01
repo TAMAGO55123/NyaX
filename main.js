@@ -845,28 +845,21 @@ window.addEventListener('DOMContentLoaded', () => {
 		// ログアウトボタン（account-button）が存在する場合のみイベントリスナーを設定
 		DOM.navMenuBottom
 			.querySelector('#account-button')
-			?.addEventListener('click', () => {
-				if (window.matchMedia('(min-width:680px)').matches) {
-					openAccountSwitcherModal();
-				} else {
-					location.hash = `#profile/${currentUser.id}`;
-				}
-			});
+			?.addEventListener('click', openAccountSwitcherModal);
 		DOM.navMenuTop
 			.querySelector('.nav-item-post')
 			?.addEventListener('click', () => openPostModal());
-		const AccountButton =
-			document.getElementsByClassName('nav-item-post')[0];
-		if (AccountButton) {
+		const PostButton = document.getElementsByClassName('nav-item-post')[0];
+		if (PostButton) {
 			if (
 				window.matchMedia('(max-width:680px)').matches &&
 				location.hash.startsWith('#dm')
 			) {
-				if (!AccountButton.classList.contains('hidden')) {
-					AccountButton.classList.add('hidden');
+				if (!PostButton.classList.contains('hidden')) {
+					PostButton.classList.add('hidden');
 				}
-			} else if (AccountButton.classList.contains('hidden')) {
-				AccountButton.classList.remove('hidden');
+			} else if (PostButton.classList.contains('hidden')) {
+				PostButton.classList.remove('hidden');
 			}
 		}
 		loadRightSidebar();
