@@ -810,9 +810,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			);
 		}
 
-		if (window.matchMedia('(min-width:768px)').matches) {
-			DOM.navLogo.innerHTML = `<a href="#" class="nav-logo-img">${ICONS.nyax_logo}</a>`;
-		}
+		DOM.navLogo.innerHTML = `<a href="#" class="nav-logo-img">${ICONS.nyax_logo}</a>`;
 
 		DOM.navMenuTop.innerHTML = menuItems
 			.map((item) => {
@@ -847,7 +845,13 @@ window.addEventListener('DOMContentLoaded', () => {
 		// ログアウトボタン（account-button）が存在する場合のみイベントリスナーを設定
 		DOM.navMenuBottom
 			.querySelector('#account-button')
-			?.addEventListener('click', openAccountSwitcherModal);
+			?.addEventListener('click', () => {
+				if (window.matchMedia('(min-width:680px)').matches) {
+					openAccountSwitcherModal();
+				} else {
+					location.hash = `#profile/${currentUser.id}`;
+				}
+			});
 		DOM.navMenuTop
 			.querySelector('.nav-item-post')
 			?.addEventListener('click', () => openPostModal());

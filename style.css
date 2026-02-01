@@ -1279,10 +1279,14 @@ body.dark .profile-follow-button {
 	z-index: 100;
 }
 
-#login-banner-content h3 {
+.login-banner-content h2 {
+	transform: translateY(0.4rem);
 	margin: 0;
-	font-weight: 500;
-	font-size: 1.1rem;
+}
+
+.login-banner-content h4 {
+	transform: translate(-0.45rem, -0.5rem);
+	margin: 0.5rem;
 }
 
 /* ログインボタン: 白背景、黒文字 */
@@ -2607,7 +2611,6 @@ body.dark .profile-follow-button {
 	#left-nav #account-button .account-info {
 		display: none;
 	}
-	/* ▲▲▲ 追加ここまで ▲▲▲ */
 }
 
 @media (max-width: 680px) {
@@ -2639,12 +2642,23 @@ body.dark .profile-follow-button {
 		width: 100%;
 	}
 	.nav-item[href='#likes'],
-	.nav-item[href='#stars'] {
+	.nav-item[href='#stars'],
+	.nav-item[href^='#profile'] {
 		display: none;
 	}
-	.nav-item-post,
-	#nav-menu-bottom {
-		display: none;
+	.nav-item-post {
+		position: fixed;
+		z-index: 20;
+		bottom: 4rem;
+		right: 1rem;
+		display: flex;
+	}
+	#account-button {
+		position: fixed;
+		z-index: 30;
+		top: 0;
+		right: 0.5rem;
+		width: auto;
 	}
 	#profile-tabs .tab-button.mobile-hidden {
 		display: none;
