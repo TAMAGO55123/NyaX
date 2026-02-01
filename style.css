@@ -2640,7 +2640,11 @@ body.dark .profile-follow-button {
 		width: auto;
 	}
 	.header-search-bar {
-		width: 80%;
+		width: calc(95% - 4rem);
+	}
+	.header-action-btn {
+		position: sticky;
+		right: 4.5rem;
 	}
 	#profile-tabs .tab-button.mobile-hidden {
 		display: none;
