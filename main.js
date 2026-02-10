@@ -744,7 +744,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		DOM.rightSidebar.links.innerHTML = linkItems
 			.map((item) => {
 				return `
-            <a href="/${item.link}" class="link ${item.link}">${item.name}</a>
+            <a href="/${item.link}" class="link">${item.name}</a>
             `;
 			})
 			.join('');
