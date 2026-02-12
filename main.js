@@ -703,12 +703,12 @@ window.addEventListener('DOMContentLoaded', () => {
 			.limit(3);
 
 		const linkItems = [
-			{ name: 'NyaXルール', link: 'rule' },
+			{ name: 'NyaXルール', link: '/rule' },
 			/*{ name: '各種ランキング', link: 'ranking' },*/
-			{ name: '統計', link: 'stat' },
-			{ name: '申請フォーム', link: 'forms' },
-			{ name: 'Emoji一覧', link: 'emoji' },
-			{ name: 'Discord鯖', link: 'discord' },
+			{ name: '統計', link: '/stat' },
+			{ name: '申請フォーム', link: '/forms' },
+			{ name: 'Emoji一覧', link: '/emoji' },
+			{ name: 'Discord鯖', link: '/discord' },
 		];
 
 		if (error || !data || data.length === 0) {
@@ -744,7 +744,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		DOM.rightSidebar.links.innerHTML = linkItems
 			.map((item) => {
 				return `
-            <a href="/${item.link}" class="link">${item.name}</a>
+            <a href="${item.link}" class="link">${item.name}</a>
             `;
 			})
 			.join('');
