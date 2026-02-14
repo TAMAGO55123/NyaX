@@ -850,6 +850,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			.querySelector('.nav-item-post')
 			?.addEventListener('click', () => openPostModal());
 		const PostButton = document.getElementsByClassName('nav-item-post')[0];
+		const AccountButton = document.getElementById('account-button');
 		if (PostButton) {
 			if (
 				window.matchMedia('(max-width:680px)').matches &&
@@ -860,6 +861,18 @@ window.addEventListener('DOMContentLoaded', () => {
 				}
 			} else if (PostButton.classList.contains('hidden')) {
 				PostButton.classList.remove('hidden');
+			}
+		}
+		if (AccountButton) {
+			if (
+				window.matchMedia('(max-width:680px)').matches &&
+				location.hash.startsWith('#dm')
+			) {
+				if (!AccountButton.classList.contains('hidden')) {
+					AccountButton.classList.add('hidden');
+				}
+			} else if (AccountButton.classList.contains('hidden')) {
+				AccountButton.classList.remove('hidden');
 			}
 		}
 		loadRightSidebar();
@@ -921,13 +934,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
 		if (session) {
 			try {
-				const authUserId = session.user.id; // これはUUID
+				const authUserId = session.user.id;
 
-				// 取得した認証UUIDを使って、'uuid'カラムを検索する
 				const { data, error } = await supabase
 					.from('user')
 					.select('*')
-					.eq('uuid', authUserId) // 'id'ではなく'uuid'と比較する
+					.eq('uuid', authUserId)
 					.single();
 
 				if (error || !data)
@@ -964,7 +976,12 @@ window.addEventListener('DOMContentLoaded', () => {
 	function addAccountToList(user, session) {
 		// 既存と重複チェック
 		let accounts = getAccountList();
-		if (accounts.find((a) => a.id === user.id)) return;
+		if (accounts.find((a) => a.id === user.id)) {
+			while (accounts.find((a) => a.id === user.id)) {
+				const Index = accounts.findIndex((a) => a.id === user.id);
+				accounts.splice(Index, 1);
+			}
+		}
 		accounts.push({
 			id: user.id,
 			name: user.name,
@@ -1055,6 +1072,12 @@ window.addEventListener('DOMContentLoaded', () => {
 					// 切り替え
 					const acc = accounts.find((a) => a.id === userId);
 					if (acc && acc.token) {
+						// セッション保存
+						supabase.auth.getSession().then(({ data }) => {
+							if (data?.session && currentUser) {
+								addAccountToList(currentUser, data.session);
+							}
+						});
 						// アカウント切り替え処理
 						supabase.auth.setSession(acc.token).then(() => {
 							document
