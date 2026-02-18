@@ -2325,7 +2325,12 @@ window.addEventListener('DOMContentLoaded', () => {
 			.order('id', { ascending: true })
 			.limit(10);
 		if (userError) console.error('ユーザー検索エラー:', userError);
-		userResultsContainer.innerHTML = `<h3 style="padding:1rem;">ユーザー (${users?.length || 0}件)</h3>`;
+		const userTitle = document.createElement('h3');
+		userTitle.style.padding = '1rem';
+		userTitle.textContent = `ユーザー (0件)`
+		userResultsContainer.innerHTML = '';
+		userResultsContainer.appendChild(userTitle)
+		//userResultsContainer.innerHTML = `<h3 style="padding:1rem;">ユーザー (${users?.length || 0}件)</h3>`;
 		if (users && users.length > 0) {
 			let user_count = 0
 			users.forEach((u) => {
@@ -2343,6 +2348,7 @@ window.addEventListener('DOMContentLoaded', () => {
 					userResultsContainer.appendChild(userCard);
 				}
 			});
+			userTitle.textContent = `ユーザー (${user_count || 0}件)`
 			if (user_count == 0) {
 				userResultsContainer.innerHTML += `<p style="padding:1rem; text-align:center;">ユーザーは見つかりませんでした。</p>`;
 			}
