@@ -2329,7 +2329,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		if (users && users.length > 0) {
 			let user_count = 0
 			users.forEach((u) => {
-				if (users.settings.show_scid){
+				if (u.settings.show_scid){
 					user_count++;
 					const userCard = document.createElement('div');
 					userCard.className = 'profile-card widget-item';
