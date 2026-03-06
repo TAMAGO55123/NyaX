@@ -890,7 +890,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		const accounts = getAccountList();
 		if (accounts.length > 0) {
 			// 次のアカウントでログイン
-			supabase.auth.setSession(accounts[0].token).then(() => {
+			supabase.auth.setSession(accounts[0].token.access_token, accounts[0].token.refresh_token).then(() => {
 				checkSession();
 			});
 		} else {
@@ -918,7 +918,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				const {
 					data: { session: _sess },
 					error: _sess_err,
-				} = await supabase.auth.setSession(accounts[0].token);
+				} = await supabase.auth.setSession(accounts[0].token.access_token, accounts[0].token.refresh_token);
 				if (_sess_err || !_sess) {
 					accounts.splice(0, 1);
 					setAccountList(accounts);
@@ -1079,7 +1079,7 @@ window.addEventListener('DOMContentLoaded', () => {
 							}
 						});
 						// アカウント切り替え処理
-						supabase.auth.setSession(acc.token).then(() => {
+						supabase.auth.setSession(acc.token.access_token, acc.token.refresh_token).then(() => {
 							document
 								.getElementById('account-switcher-modal')
 								.classList.add('hidden');
